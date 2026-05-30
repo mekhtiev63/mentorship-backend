@@ -1,4 +1,4 @@
-.PHONY: run build test migrate-up compose-up compose-down compose-logs
+.PHONY: run build test migrate-up compose-up compose-down compose-logs compose-api-up
 
 build:
 	go build -o bin/api ./cmd/api
@@ -15,6 +15,9 @@ migrate-up:
 
 compose-up:
 	docker-compose up -d --build
+
+compose-api-up:
+	docker-compose up -d --build postgres redis migrate backend
 
 compose-down:
 	docker-compose down

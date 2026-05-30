@@ -1,5 +1,8 @@
-# Full stack: docker-compose up -d --build
-# CLI: docker-compose (v1) or docker compose (v2). Optional: cp .env.example .env
+# Full stack (backend + frontends): docker-compose up -d --build
+# Requires sibling repos (same parent directory):
+#   ../mentorship-frontend-master
+#   ../mentorship-frontend-admin
+# API only: make compose-api-up
 
 x-backend-env: &backend-env
   APP_ENV: ${APP_ENV:-development}
@@ -68,7 +71,7 @@ services:
   migrate:
     build:
       context: .
-      dockerfile: backend/Dockerfile
+      dockerfile: Dockerfile
     environment:
       <<: *backend-env
       MIGRATIONS_PATH: /app/migrations
@@ -83,7 +86,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: backend/Dockerfile
+      dockerfile: Dockerfile
     environment:
       <<: *backend-env
     ports:
@@ -107,7 +110,7 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: ../mentorship-frontend-master
       dockerfile: Dockerfile
       args:
         VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api/v1}
@@ -128,7 +131,7 @@ services:
 
   frontend-admin:
     build:
-      context: ./frontend-admin
+      context: ../mentorship-frontend-admin
       dockerfile: Dockerfile
       args:
         VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api/v1}

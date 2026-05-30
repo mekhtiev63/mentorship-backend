@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-# Build context: repository root (docker compose: context: ., dockerfile: backend/Dockerfile)
+# Build context: repository root (mentorship-backend)
 
 FROM golang:1.25-alpine AS builder
 

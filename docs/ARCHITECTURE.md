@@ -18,7 +18,7 @@ Modular monolith (Go 1.25+, PostgreSQL, Redis, REST `/api/v1`).
 
 - API: `cmd/api`
 - Migrations: `cmd/migrate` (golang-migrate, SQL under `migrations/`)
-- Docker: `deployments/docker-compose.yml`
+- Docker: [`docker-compose.yml`](./docker-compose.yml), образ — [`Dockerfile`](./Dockerfile)
 
 Full endpoint and table lists are defined in the project architecture baseline (v1.0).
 
