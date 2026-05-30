@@ -1,0 +1,69 @@
+services:
+  migrate:
+    build:
+      context: ..
+      dockerfile: deployments/Dockerfile.api
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgres://mentorship:mentorship@postgres:5432/mentorship?sslmode=disable
+      MIGRATIONS_PATH: /app/migrations
+    entrypoint: ["/app/migrate", "-migrations", "/app/migrations"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    build:
+      context: ..
+      dockerfile: deployments/Dockerfile.api
+    ports:
+      - "${HTTP_PORT:-8080}:8080"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgres://mentorship:mentorship@postgres:5432/mentorship?sslmode=disable
+      REDIS_ADDR: redis:6379
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: mentorship
+      POSTGRES_PASSWORD: mentorship
+      POSTGRES_DB: mentorship
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mentorship -d mentorship"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:

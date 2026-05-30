@@ -1,0 +1,14 @@
+DROP TYPE IF EXISTS outbox_status;
+DROP TYPE IF EXISTS bonus_transaction_type;
+DROP TYPE IF EXISTS calendar_related_type;
+DROP TYPE IF EXISTS assessment_status;
+DROP TYPE IF EXISTS interview_outcome;
+DROP TYPE IF EXISTS interview_status;
+DROP TYPE IF EXISTS interview_kind;
+DROP TYPE IF EXISTS one_on_one_status;
+DROP TYPE IF EXISTS progress_status;
+DROP TYPE IF EXISTS material_type;
+DROP TYPE IF EXISTS roadmap_block_status;
+DROP TYPE IF EXISTS profile_visibility;
+DROP TYPE IF EXISTS app_role;
+DROP TYPE IF EXISTS user_status;

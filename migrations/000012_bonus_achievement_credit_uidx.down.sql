@@ -1,0 +1,1 @@
+DROP INDEX IF EXISTS bonus_transactions_achievement_credit_uidx;
